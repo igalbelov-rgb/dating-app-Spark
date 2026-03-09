@@ -2,3 +2,4 @@ fastapi
 uvicorn
 textblob
 prometheus-fastapi-instrumentator
+pytest
