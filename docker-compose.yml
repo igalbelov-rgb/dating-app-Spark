@@ -1,18 +1,37 @@
 services:
-  # שירות ה-Backend (Python FastAPI)
+  # 1. מסד הנתונים (PostgreSQL)
+  db:
+    image: postgres:15
+    container_name: dating-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dating_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dating-network
+
+  # 2. ה-Backend (FastAPI)
   backend:
     build: ./backend
     container_name: dating-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/dating_app
+    ports:
+      - "8000:8000"
     volumes:
       - ./backend:/app
     networks:
       - dating-network
-    # אין צורך לחשוף פורט 8000 החוצה אם Nginx מנהל אותו, 
-    # אבל אנחנו משאירים אותו לצרכי דיבאגינג וטסטים
-    ports:
-      - "8000:8000"
 
-  # שירות ה-Frontend וה-Proxy
+  # 3. שרת ה-Web וה-Proxy (Nginx)
   web-server:
     build: ./nginx
     container_name: dating-nginx
@@ -25,7 +44,7 @@ services:
     depends_on:
       - backend
 
-  # איסוף מטריקות (Prometheus)
+  # 4. ניטור מטריקות (Prometheus)
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -36,7 +55,7 @@ services:
     networks:
       - dating-network
 
-  # הצגת נתונים (Grafana)
+  # 5. ויזואליזציה (Grafana)
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -47,8 +66,12 @@ services:
     depends_on:
       - prometheus
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin # סיסמה ראשונית
+      - GF_SECURITY_ADMIN_PASSWORD=admin
 
+# הגדרת משאבים משותפים
 networks:
   dating-network:
     driver: bridge
+
+volumes:
+  postgres_data:

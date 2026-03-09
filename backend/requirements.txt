@@ -1,5 +1,9 @@
 fastapi
 uvicorn
+sqlalchemy
 textblob
 prometheus-fastapi-instrumentator
+psycopg2-binary
 pytest
+httpx
+pydantic-settings
