@@ -10,22 +10,21 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest httpx fastapi pydantic textblob prometheus-fastapi-instrumentator
-        python -m textblob.download_corpora
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest httpx fastapi pydantic textblob prometheus-fastapi-instrumentator
+          python -m textblob.download_corpora
 
-    - name: Run Tests
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
-        # הרצה של pytest על תיקיית הבדיקות
-        pytest backend/tests -v
+      - name: Run Tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
+          pytest backend/tests -v
