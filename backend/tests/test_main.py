@@ -1,3 +1,8 @@
+import sys
+import os
+# מוסיף את התיקייה הנוכחית לנתיב של פייתון
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi.testclient import TestClient
 from main import app
 
@@ -22,4 +27,5 @@ def test_survey_analysis_negative():
         "looking_for": "casual",
         "bio": "I hate everything and I am very sad."
     })
+    assert response.status_code == 200 # הוספתי את זה ליתר ביטחון
     assert "שלילי" in response.json()["message"]

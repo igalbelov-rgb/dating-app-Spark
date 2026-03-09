@@ -20,6 +20,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest httpx fastapi pydantic textblob prometheus-fastapi-instrumentator
-    - name: Run Automated Tests
+    - name: Run Tests
       run: |
-        pytest backend/test_main.py
+        # נכנסים לתיקיית backend ומריצים את pytest משם
+        cd backend
+        export PYTHONPATH=$PYTHONPATH:.
+        pytest test_main.py
