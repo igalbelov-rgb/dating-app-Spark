@@ -1,4 +1,5 @@
 ![CI Status](https://github.com/igalbelov-rgb/dating-app-Spark/actions/workflows/ci.yml/badge.svg)
+
 # Spark AI - Intelligent Dating Insights 🚀
 
 A full-stack application that analyzes dating bios using AI and provides real-time performance monitoring.
