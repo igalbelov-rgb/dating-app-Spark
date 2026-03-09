@@ -22,7 +22,9 @@ jobs:
         pip install pytest httpx fastapi pydantic textblob prometheus-fastapi-instrumentator
     - name: Run Tests
       run: |
-        # נכנסים לתיקיית backend ומריצים את pytest משם
-        cd backend
-        export PYTHONPATH=$PYTHONPATH:.
-        pytest test_main.py
+        # פקודה שבודקת איפה אנחנו נמצאים ומה יש בתיקייה (בשביל הלוגים שלנו)
+        pwd
+        ls -R
+        # הרצה שמחפשת את הטסטים בכל מקום בתיקיית backend
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
+        pytest backend/
