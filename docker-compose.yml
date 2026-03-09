@@ -1,0 +1,54 @@
+services:
+  # שירות ה-Backend (Python FastAPI)
+  backend:
+    build: ./backend
+    container_name: dating-backend
+    volumes:
+      - ./backend:/app
+    networks:
+      - dating-network
+    # אין צורך לחשוף פורט 8000 החוצה אם Nginx מנהל אותו, 
+    # אבל אנחנו משאירים אותו לצרכי דיבאגינג וטסטים
+    ports:
+      - "8000:8000"
+
+  # שירות ה-Frontend וה-Proxy
+  web-server:
+    build: ./nginx
+    container_name: dating-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    networks:
+      - dating-network
+    depends_on:
+      - backend
+
+  # איסוף מטריקות (Prometheus)
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - dating-network
+
+  # הצגת נתונים (Grafana)
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - dating-network
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # סיסמה ראשונית
+
+networks:
+  dating-network:
+    driver: bridge

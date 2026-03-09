@@ -1,0 +1,115 @@
+:root {
+    --primary-color: #ff4b2b;
+    --secondary-color: #ff416c;
+    --text-dark: #2d3436;
+    --bg-light: #f9f9f9;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+/* תפריט עליון */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 10%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    margin-left: 20px;
+}
+
+/* אזור ראשי */
+.hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
+            url(https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1350&q=80);
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    
+    /* הגרסה הסטנדרטית */
+    background-clip: text; 
+    
+    /* הגרסה לדפדפני Chrome, Safari ו-Edge */
+    -webkit-background-clip: text; 
+    
+    /* חייבים להפוך את צבע הטקסט לשקוף כדי שהרקע ייראה דרכו */
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #636e72;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+/* כפתורים */
+button {
+    padding: 12px 30px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-main {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    margin-right: 10px;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* וידוא שהטופס והכפתור מוצגים */
+.survey-section {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.btn-main {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff4b2b; /* צבע כתום-אדום של Spark */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-height: 40px; /* וידוא שיש לו גובה */
+    width: 100%;
+}

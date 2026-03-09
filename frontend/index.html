@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark - הכירויות חכמות</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Spark 🔥</div>
+        <div class="nav-links">
+            <a href="#">התחברות</a>
+            <button class="btn-main">הרשמה</button>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>למצוא את החצי השני בדרך הכי יעילה</h1>
+            <p>פלטפורמת היכרויות מבוססת אלגוריתם חכם, שנבנתה בטכנולוגיות המתקדמות ביותר.</p>
+            <div class="cta-group">
+                <button class="btn-main">התחל עכשיו</button>
+                <button class="btn-secondary">איך זה עובד?</button>
+            </div>
+        </div>
+    </main>
+
+    <section class="survey-section" id="survey">
+        <h2>ספר/י לנו על עצמך (ה-AI שלנו ימצא לך התאמה)</h2>
+        <form id="ai-survey-form" class="survey-form">
+            <input type="text" id="profession" placeholder="מה המקצוע שלך?" required>
+            <input type="text" id="hobbies" placeholder="תחביבים (הפרד בפסיקים)" required>
+            <select id="looking_for">
+                <option value="serious">קשר רציני</option>
+                <option value="casual">קשר קליל</option>
+                <option value="friends">חברים לטיולים</option>
+            </select>
+            <textarea id="bio" placeholder="כתוב/י כמה מילים על עצמך (באנגלית בינתיים)..."></textarea>
+            <button type="submit" class="btn-main">שלח/י לניתוח AI</button>
+        </form>
+        <div id="survey-response" class="response-message"></div>
+    </section>
+
+    <section class="profiles">
+        <h2>התאמות בשבילך</h2>
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="profile-img" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg')"></div>
+                <div class="profile-info">
+                    <h3>דניאל, 26</h3>
+                    <p>חובבת טיולים וקפה איכותי ☕</p>
+                    <button class="btn-main" style="width: 100%;">❤ Like</button>
+                </div>
+            </div>
+            <div class="profile-card">
+                <div class="profile-img" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg')"></div>
+                <div class="profile-info">
+                    <h3>יוני, 29</h3>
+                    <p>מפתח Full Stack שאוהב לבשל 👨‍💻</p>
+                    <button class="btn-main" style="width: 100%;">❤ Like</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('ai-survey-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // איסוף הנתונים מהטופס
+            const data = {
+                user_id: 1,
+                profession: document.getElementById('profession').value,
+                hobbies: document.getElementById('hobbies').value.split(','),
+                looking_for: document.getElementById('looking_for').value,
+                bio: document.getElementById('bio').value
+            };
+
+            try {
+                // שליחה ל-Nginx שמפנה ל-FastAPI
+                const response = await fetch('/api/submit-survey', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // כאן אנחנו משלבים את שורת התגובה שביקשת
+                document.getElementById('survey-response').innerHTML = `
+                    <div style="background: #e1f5fe; padding: 15px; border-radius: 10px; margin-top: 15px; color: #01579b; border: 1px solid #b3e5fc;">
+                        <p><strong>תוצאת ניתוח Spark AI:</strong> ${result.message}</p>
+                        <p><em>המלצה:</em> ${result.recommendation}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('survey-response').innerHTML = "אופס! השרת לא מגיב. וודא שה-Docker רץ.";
+            }
+        });
+    </script>
+</body>
+</html>
